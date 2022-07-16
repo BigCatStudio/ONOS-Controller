@@ -2,23 +2,25 @@
 
 JSONConverter::JSONConverter() {}
 
-QByteArray JSONConverter::postBody(QString deviceId, QString outPort, QString inPort, QString ip) const {
-    QJsonObject object;
+QByteArray JSONConverter::postBodyJSON(QString deviceId, QString outPort, QString inPort, QString ip) const {
+    QJsonObject mainObject;
 
-    object["priority"] = 40000;
-    object["timeout"] = 0;
-    object["isPermanent"] = true;
-    object["deviceId"] = "of:000000000000000" + deviceId;
+    mainObject["priority"] = 40000;
+    mainObject["timeout"] = 0;
+    mainObject["isPermanent"] = true;
+    mainObject["deviceId"] = "of:000000000000000" + deviceId;
 
     // treatment
     QJsonObject instructionsObject;
     QJsonArray instructionsArray;
     QJsonObject instructionsContent;
+
     instructionsContent["type"] = "OUTPUT";
     instructionsContent["port"] = outPort;
     instructionsArray.append(instructionsContent);
+
     instructionsObject["instructions"] = instructionsArray;
-    object["treatment"] = instructionsObject;
+    mainObject["treatment"] = instructionsObject;
 
     // selector
     QJsonObject criteriaObject;
@@ -26,6 +28,7 @@ QByteArray JSONConverter::postBody(QString deviceId, QString outPort, QString in
     QJsonObject criteriaPort;
     QJsonObject criteriaType;
     QJsonObject criteriaIp;
+
     criteriaPort["type"] = "IN_PORT";
     criteriaPort["port"] = inPort;
     criteriaArray.append(criteriaPort);
@@ -39,12 +42,12 @@ QByteArray JSONConverter::postBody(QString deviceId, QString outPort, QString in
     criteriaArray.append(criteriaIp);
 
     criteriaObject["criteria"] = criteriaArray;
-    object["selector"] = criteriaObject;
+    mainObject["selector"] = criteriaObject;
 
-    // TODO maybe make logger that saves all POST and GET bodies to file to have hostory of them all
+    // TODO maybe make logger that saves all POST and GET bodies to file to have history of them all
     // Add date of request and type of request etc
-    // Saving JSON document to file
-    QJsonDocument document(object);
+    // Saving JSON document to file - just testing purpouse, if structure of JSON is OK
+    QJsonDocument document(mainObject);
     QByteArray data = document.toJson();
     QFile file("../Code/data.json");
     if(file.open(QIODevice::WriteOnly)) {

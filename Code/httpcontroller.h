@@ -1,6 +1,7 @@
 #ifndef HTTPCONTROLLER_H
 #define HTTPCONTROLLER_H
 
+// TODO change qInfo() to std::cout and later change std::cout to GUI/QML output
 #include <QObject>
 #include <QDebug>
 #include <QNetworkAccessManager>
