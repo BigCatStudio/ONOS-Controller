@@ -17,5 +17,6 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
 add_executable(Code
   main.cpp
   httpcontroller.h  httpcontroller.cpp
+  jsonconverter.h   jsonconverter.cpp
 )
 target_link_libraries(Code Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)

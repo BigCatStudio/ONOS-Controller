@@ -10,8 +10,8 @@
 #include <QNetworkProxy>
 #include <typeinfo>
 
-class HTTPController : public QObject
-{
+// It has to be QObject because it uses slots to connect with QNetworkManager signals (operations are done asynchronously)
+class HTTPController : public QObject {
     Q_OBJECT
 private:
     QNetworkAccessManager manager;
@@ -20,6 +20,8 @@ public:
     explicit HTTPController(QObject *parent = nullptr);
 
 public slots:
+    // TODO add slots for other ONOS functions like routes/switches/hosts etc to
+    // know what is the structure of the topology and which ports are connected
     void get(QString location);
     void post(QString location, QByteArray data);
 
