@@ -10,6 +10,7 @@
 #include <QAuthenticator>
 #include <QNetworkProxy>
 #include <typeinfo>
+#include <QFile>
 
 // It has to be QObject because it uses slots to connect with QNetworkManager signals (operations are done asynchronously)
 class HTTPController : public QObject {
