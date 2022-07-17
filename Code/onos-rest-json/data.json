@@ -1,0 +1,30 @@
+{
+    "deviceId": "of:0000000000000001",
+    "isPermanent": true,
+    "priority": 40000,
+    "selector": {
+        "criteria": [
+            {
+                "port": "3",
+                "type": "IN_PORT"
+            },
+            {
+                "ethType": "0x0800",
+                "type": "ETH_TYPE"
+            },
+            {
+                "ip": "10.0.0.1/32",
+                "type": "IPV4_DST"
+            }
+        ]
+    },
+    "timeout": 0,
+    "treatment": {
+        "instructions": [
+            {
+                "port": "4",
+                "type": "OUTPUT"
+            }
+        ]
+    }
+}
