@@ -21,14 +21,7 @@ int main(int argc, char *argv[]) {
     // TODO when executing GET and POST the finished method should be called to delete reply from server
     // Check if it is correctly deleted and check VoidRealms video about HTTP
 
-
-    // POST request test
-//    QByteArray data;
-//    data.append("param1=hello");
-//    data.append("&");
-//    data.append("param2=foo");
-
-//    controller.post("https://postman-echo.com/post",data);
+    // TODO make all comments start with big letter
 
     return a.exec();
 }

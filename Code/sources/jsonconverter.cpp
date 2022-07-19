@@ -2,13 +2,13 @@
 
 JSONConverter::JSONConverter() {}
 
-QByteArray JSONConverter::postBodyJSON(QString deviceId, QString outPort, QString inPort, QString ip) const {
+QByteArray JSONConverter::postBodyJSON(QString deviceId, QString outPort, QString inPort, QString ip) {
     QJsonObject mainObject;
 
-    mainObject["priority"] = 40000;
+    mainObject["priority"] = 40000;         // Constant value to prioritise all flows equally
     mainObject["timeout"] = 0;
     mainObject["isPermanent"] = true;
-    mainObject["deviceId"] = "of:000000000000000" + deviceId;
+    mainObject["deviceId"] = deviceId;      // deviceId should be full id: "of:000000000000000x"
 
     // treatment
     QJsonObject instructionsObject;
