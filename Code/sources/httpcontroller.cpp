@@ -40,7 +40,7 @@ void HTTPController::readyRead() {
 //    }
     QByteArray data = reply->readAll();
 
-    QFile file("../Code/flows.json");
+    QFile file("../Code/onos-rest-json/flows.json");
     if(file.open(QIODevice::WriteOnly)) {
         qInfo() << "File opened";
         file.write(data);
