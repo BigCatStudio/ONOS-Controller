@@ -9,7 +9,8 @@ class Topology {
 private:
     std::vector<Switch> switches;   // All switches in topology
     std::vector<Host> hosts;        // All hosts in topology
-    std::vector<std::vector<LinkSwitches>> linksSwitches;
+    std::vector<std::vector<LinkSwitches>> linksSwitches;   // All links between switches
+    // TODO think about adding links with hosts because host can be connected with more than one switch
 
 public:
     Topology();

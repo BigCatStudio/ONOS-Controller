@@ -1,10 +1,6 @@
 #include "../headers/topologyelements.h"
 
-//TopologyElements::TopologyElements()
-//{
-
-//}
-
+// TODO add proper constructors for these structs
 Switch::Switch() {}
 
 Host::Host() {}
