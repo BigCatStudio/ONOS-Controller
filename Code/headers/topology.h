@@ -15,7 +15,7 @@ class Topology {
 private:
     std::vector<Switch> switches;   // All switches in topology
     std::vector<Host> hosts;        // All hosts in topology
-    std::vector<LinkSwitches> linksSwitches;   // All links between switches
+    std::vector<Link> links;        // All links between switches
     // Host can be connected only with one switch, so hosts will not be regarded as Nodes when calculating paths
 
     // TODO create Adjacency List to store all links for every host/switch and its cost
@@ -27,7 +27,5 @@ public:
     Topology();
 
 };
-
-//std::ostream &operator<<(std::ostream &stream, const Topology &Source);
 
 #endif // TOPOLOGY_H

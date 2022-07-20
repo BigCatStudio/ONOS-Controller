@@ -103,8 +103,8 @@ std::vector<Switch> JSONConverter::getSwitchesJSON(QByteArray switchesData) {
     return switches;
 }
 
-std::vector<LinkSwitches> JSONConverter::getLinksSwitchesJSON(QByteArray linksData) {
-    std::vector<LinkSwitches> linksSwitches;
+std::vector<Link> JSONConverter::getLinksJSON(QByteArray linksData) {
+    std::vector<Link> links;
     QJsonDocument document = QJsonDocument::fromJson(linksData);
     QJsonObject mainObject = document.object();
 
@@ -123,7 +123,10 @@ std::vector<LinkSwitches> JSONConverter::getLinksSwitchesJSON(QByteArray linksDa
         QString type = linkObject["type"].toString();
         QString state = linkObject["state"].toString();
 
-        linksSwitches.emplace_back(srcId, srcPort, dstId, dstPort, type, state);
+        links.emplace_back(srcId, srcPort, dstId, dstPort, type, state);
     }
-    return linksSwitches;
+
+    // TODO check size and capacity of the vectors at the end - if capacity is larger than size, resize vectors to size
+
+    return links;
 }

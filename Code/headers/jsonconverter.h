@@ -23,9 +23,10 @@ public:
     // Creates JSON body of POST request for one one-direction-connection between ports (outport and inPort)
     static QByteArray postBodyJSON(QString deviceId, QString outPort, QString inPort, QString ip);
 
+    // These functions create proper std::vector<> for Topology from json files downloaded from ONOS URL
     static std::vector<Host> getHostsJSON(QByteArray hostsData);
     static std::vector<Switch> getSwitchesJSON(QByteArray switchesData);
-    static std::vector<LinkSwitches> getLinksSwitchesJSON(QByteArray linksData);
+    static std::vector<Link> getLinksJSON(QByteArray linksData);
 };
 
 #endif // JSONCONVERTER_H

@@ -7,7 +7,7 @@ Switch::Switch(QString idGiven, QString chassisIdGiven, bool availableGiven)
 Host::Host(QString idGiven, QString ipAddressGiven, bool configuredGiven, std::pair<QString, QString> linkToSwitchGiven)
     : id{idGiven}, ipAddress{ipAddressGiven}, configured{configuredGiven}, linkToSwitch{linkToSwitchGiven} {}
 
-LinkSwitches::LinkSwitches(QString srcIdGiven, QString srcPortGiven, QString dstIdGiven, QString dstPortGiven, QString typeGiven, QString stateGiven)
+Link::Link(QString srcIdGiven, QString srcPortGiven, QString dstIdGiven, QString dstPortGiven, QString typeGiven, QString stateGiven)
     : srcId{srcIdGiven}, srcPort{srcPortGiven}, dstId{dstIdGiven}, dstPort{dstPortGiven}, type{typeGiven}, state{stateGiven} {}
 
 std::ostream &operator<<(std::ostream &stream, const Switch &Source) {
@@ -20,7 +20,7 @@ std::ostream &operator<<(std::ostream &stream, const Host &Source) {
     return stream;
 }
 
-std::ostream &operator<<(std::ostream &stream, const LinkSwitches &Source) {
+std::ostream &operator<<(std::ostream &stream, const Link &Source) {
     stream << " -> Source ID: " << Source.srcId.toStdString() << " | Source Port: " << Source.srcPort.toStdString() << " | Destination ID: " << Source.dstId.toStdString() << " | Destination Port: " << Source.dstPort.toStdString() << " | Type: " << Source.type.toStdString() << " | State: " << Source.state.toStdString();
     return stream;
 }

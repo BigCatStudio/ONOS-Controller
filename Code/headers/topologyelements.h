@@ -25,7 +25,8 @@ struct Host {
     Host(QString idGiven, QString ipAddressGiven, bool configuredGiven, std::pair<QString, QString> linkToSwitchGiven);
 };
 
-struct LinkSwitches {
+// TODO change name LinkSwitches and all linkSwitch to just Link, links etc
+struct Link {
     QString srcId;      // Id of the source switch
     QString srcPort;    // Port of the source switch
     QString dstId;      // Id of the destination switch
@@ -37,13 +38,13 @@ struct LinkSwitches {
     QString type;
     QString state;
 
-    LinkSwitches(QString srcIdGiven, QString srcPortGiven, QString dstIdGiven, QString dstPortGiven, QString typeGiven, QString stateGiven);
+    Link(QString srcIdGiven, QString srcPortGiven, QString dstIdGiven, QString dstPortGiven, QString typeGiven, QString stateGiven);
 };
 
 std::ostream &operator<<(std::ostream &stream, const Switch &Source);
 
 std::ostream &operator<<(std::ostream &stream, const Host &Source);
 
-std::ostream &operator<<(std::ostream &stream, const LinkSwitches &Source);
+std::ostream &operator<<(std::ostream &stream, const Link &Source);
 
 #endif // TOPOLOGYELEMENTS_H

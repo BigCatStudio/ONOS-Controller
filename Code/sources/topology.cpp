@@ -19,11 +19,11 @@ Topology::Topology() {
     }
     fileSwitches.close();
 
-    QFile fileLinksSwitches("../Code/onos-rest-json/links.json");
-    if(fileLinksSwitches.open(QIODevice::ReadOnly)) {
-        linksSwitches = JSONConverter::getLinksSwitchesJSON(fileLinksSwitches.readAll());
+    QFile fileLinks("../Code/onos-rest-json/links.json");
+    if(fileLinks.open(QIODevice::ReadOnly)) {
+        links = JSONConverter::getLinksJSON(fileLinks.readAll());
     }
-    fileLinksSwitches.close();
+    fileLinks.close();
 }
 
 std::ostream &operator<<(std::ostream &stream, const Topology &Source) {
@@ -38,8 +38,8 @@ std::ostream &operator<<(std::ostream &stream, const Topology &Source) {
     }
 
     stream << "\nLinks Between Switches:\n";
-    for(const auto &linkSwitches : Source.linksSwitches) {
-        stream << linkSwitches << "\n";
+    for(const auto &link : Source.links) {
+        stream << link << "\n";
     }
 
     return stream;
