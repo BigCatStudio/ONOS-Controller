@@ -8,6 +8,29 @@ HTTPController::HTTPController(QObject *parent) : QObject(parent) {
     QObject::connect(&manager,&QNetworkAccessManager::sslErrors,this,&HTTPController::sslErrors);
 }
 
+void HTTPController::getHosts(QString url) {
+    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
+    QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetHosts);
+}
+
+void HTTPController::getSwitches(QString url) {
+    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
+    QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetSwitches);
+}
+
+void HTTPController::getLinks(QString url) {
+    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
+    QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetLinks);
+}
+
+void HTTPController::postFlow(QString url, QByteArray bodyData) {
+    QNetworkRequest request = QNetworkRequest(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply *reply = manager.post(request, bodyData);
+    QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyPostFlow);
+}
+
 void HTTPController::get(QString location) {
     qInfo() << "Getting from server...";
     QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(location)));
@@ -27,10 +50,50 @@ void HTTPController::post(QString location, QByteArray data) {
     QObject::connect(reply,&QNetworkReply::readyRead,this,&HTTPController::readyRead);
 }
 
+void HTTPController::readyGetHosts() {
+    qInfo() << "Received hosts from ONOS";
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
+
+    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if(statusCode.isValid()) {
+        if(statusCode == 200) {
+            QByteArray hostsData = reply->readAll();
+            qInfo() << hostsData;
+            return;
+        }
+    }
+    // TODO maybe add exception to handle unexpected outcome
+    qWarning() << "Error occurred when executing method - status code: " << statusCode;
+}
+
+// TODO add status_code checking like in readyGetHosts()
+// TODO think how to send QByteArray data to JSONConverter and then to Topology
+// JSONConverter methods shoudld not call HTTP functions because it would be unproffesional and messy - JSON only for JSON
+void HTTPController::readyGetSwitches() {
+    qInfo() << "Received switches from ONOS";
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
+    QByteArray switchesData = reply->readAll();
+    qInfo() << switchesData;
+}
+
+void HTTPController::readyGetLinks() {
+    qInfo() << "Received links from ONOS";
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
+    QByteArray linksData = reply->readAll();
+    qInfo() << linksData;
+}
+
+void HTTPController::readyPostFlow() {
+    qInfo() << "New flow rule sent to ONOS";
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
+    QByteArray flowData = reply->readAll();
+    qInfo() << flowData;
+}
+
 // TODO Maybe there should be different functions for GET and POST methods
 void HTTPController::readyRead() {
     qInfo() << "ReadyRead";
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(QObject::sender());
     qInfo() << "Size of the reply: " << reply->size() << " | source url: " << reply->url();
     qInfo() << "System size of the reply: " << sizeof(*reply) << " | system type: " << typeid(*reply).name();
     qInfo() << "Content:";
@@ -60,7 +123,6 @@ void HTTPController::encrypted(QNetworkReply *reply) {
 }
 
 void HTTPController::finished(QNetworkReply *reply) {
-    Q_UNUSED(reply);
     qInfo() << "finished";
     reply->deleteLater();
 }

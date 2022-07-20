@@ -22,6 +22,8 @@ private:
     // Prototype: <source Node> -> [<destination Node1, cost1>, <destination Node2, cost2>, ...]
     // Adjacency List will be used as Graph representation of the topology when calculating the least costly path between hosts
 
+    // TODO - Adjacency List indexes can be chassisId of the switches because they start with 1 and grow with step 1
+    // Maybe first element of the list should be empty - not so ellegant solution !
 
 public:
     Topology();

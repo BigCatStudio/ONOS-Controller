@@ -9,8 +9,8 @@
 #include <QNetworkRequest>
 #include <QAuthenticator>
 #include <QNetworkProxy>
-#include <typeinfo>
 #include <QFile>
+#include <typeinfo> // TODO probably to remove in the future
 
 // It has to be QObject because it uses slots to connect with QNetworkManager signals (operations are done asynchronously)
 class HTTPController : public QObject {
@@ -24,10 +24,25 @@ public:
 public slots:
     // TODO add slots for other ONOS functions like routes/switches/hosts etc to
     // know what is the structure of the topology and which ports are connected
+
+    // User-defined
+    void getHosts(QString url);
+    void getSwitches(QString url);
+    void getLinks(QString url);
+    void postFlow(QString url, QByteArray bodyData);
+
+    // Qt-provided
     void get(QString location);
     void post(QString location, QByteArray data);
 
 private slots:
+    // User-defined
+    void readyGetHosts();
+    void readyGetSwitches();
+    void readyGetLinks();
+    void readyPostFlow();
+
+    // Qt-provided
     void readyRead();
     void authenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator);
     void encrypted(QNetworkReply *reply);
