@@ -6,7 +6,6 @@ HTTPController::HTTPController(QObject *parent) : QObject(parent) {
     QObject::connect(&manager,&QNetworkAccessManager::preSharedKeyAuthenticationRequired,this,&HTTPController::preSharedKeyAuthenticationRequired);
     QObject::connect(&manager,&QNetworkAccessManager::proxyAuthenticationRequired,this,&HTTPController::proxyAuthenticationRequired);
     QObject::connect(&manager,&QNetworkAccessManager::sslErrors,this,&HTTPController::sslErrors);
-
 }
 
 void HTTPController::get(QString location) {

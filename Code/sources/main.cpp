@@ -1,12 +1,19 @@
 #include <QCoreApplication>
+#include <iostream>
+
 #include "headers/httpcontroller.h"
 #include "headers/jsonconverter.h"
+#include "headers/topology.h"
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
-    // GET request test
     HTTPController controller;
+
+    Topology topo;
+    std::cout << topo;
+
+
     // controller.get("https://ptsv2.com/t/o70s1-1657810062/post");
 
 //    JSONConverter converter;
@@ -14,7 +21,7 @@ int main(int argc, char *argv[]) {
 
 //    controller.post("ONOS url", data);
 
-    controller.get("http://192.168.0.113:8181/onos/v1/flows");
+    // controller.get("http://192.168.0.113:8181/onos/v1/flows");
 
     // TODO add function that deletes all current routes in topology - script on pendrive
 

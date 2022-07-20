@@ -49,7 +49,7 @@ QByteArray JSONConverter::postBodyJSON(QString deviceId, QString outPort, QStrin
     // Saving JSON document to file - just testing purpouse, if structure of JSON is OK
     QJsonDocument document(mainObject);
     QByteArray data = document.toJson();
-    QFile file("../Code/data.json");
+    QFile file("../Code/onos-rest-json/data.json");
     if(file.open(QIODevice::WriteOnly)) {
         qInfo() << "File opened";
         file.write(data);
@@ -57,4 +57,73 @@ QByteArray JSONConverter::postBodyJSON(QString deviceId, QString outPort, QStrin
     file.close();
 
     return data;
+}
+
+std::vector<Host> JSONConverter::getHostsJSON(QByteArray hostsData) {
+    std::vector<Host> hosts;
+    QJsonDocument document = QJsonDocument::fromJson(hostsData);
+    QJsonObject mainObject = document.object();
+
+    QJsonArray hostsArray = mainObject["hosts"].toArray();
+    for(size_t i {0};i < hostsArray.size();i++) {
+        QJsonObject hostObject = hostsArray[i].toObject();
+
+        QString id = hostObject["id"].toString();
+        bool configured = hostObject["configured"].toBool();
+
+        QJsonArray ipAddressesArray = hostObject["ipAddresses"].toArray();
+        QString ipAddress = ipAddressesArray[0].toString();
+
+        QJsonArray locationsArray = hostObject["locations"].toArray();
+        QJsonObject locationObject = locationsArray[0].toObject();
+        std::pair<QString, QString> linkToSwitch = {locationObject["elementId"].toString(), locationObject["port"].toString()};
+
+        hosts.emplace_back(id, ipAddress, configured, linkToSwitch);
+    }
+    return hosts;
+}
+
+std::vector<Switch> JSONConverter::getSwitchesJSON(QByteArray switchesData) {
+    std::vector<Switch> switches;
+    QJsonDocument document = QJsonDocument::fromJson(switchesData);
+    QJsonObject mainObject = document.object();
+
+    QJsonArray switchesArray = mainObject["devices"].toArray();
+    for(size_t i {0};i < switchesArray.size();i++) {
+        QJsonObject switchObject = switchesArray[i].toObject();
+
+        if(switchObject["type"].toString() == "SWITCH") {
+            QString id = switchObject["id"].toString();
+            bool available = switchObject["available"].toBool();
+            QString chassisId = switchObject["chassisId"].toString();
+
+            switches.emplace_back(id, chassisId, available);
+        }
+    }
+    return switches;
+}
+
+std::vector<LinkSwitches> JSONConverter::getLinksSwitchesJSON(QByteArray linksData) {
+    std::vector<LinkSwitches> linksSwitches;
+    QJsonDocument document = QJsonDocument::fromJson(linksData);
+    QJsonObject mainObject = document.object();
+
+    QJsonArray linksArray = mainObject["links"].toArray();
+    for(size_t i {0};i < linksArray.size();i++) {
+        QJsonObject linkObject = linksArray[i].toObject();
+
+        QJsonObject srcObject = linkObject["src"].toObject();
+        QString srcId = srcObject["device"].toString();
+        QString srcPort = srcObject["port"].toString();
+
+        QJsonObject dstObject = linkObject["dst"].toObject();
+        QString dstId = dstObject["device"].toString();
+        QString dstPort = dstObject["port"].toString();
+
+        QString type = linkObject["type"].toString();
+        QString state = linkObject["state"].toString();
+
+        linksSwitches.emplace_back(srcId, srcPort, dstId, dstPort, type, state);
+    }
+    return linksSwitches;
 }
