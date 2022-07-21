@@ -12,13 +12,15 @@ QByteArray HTTPController::getHosts(QString url) {
     QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
     QEventLoop waitLoop;
     QObject::connect(reply, &QNetworkReply::readyRead, &waitLoop, &QEventLoop::quit);
-    waitLoop.exec();
+    waitLoop.exec();    
 
+    // TODO rebuild below code to return hostsData at and and throw exception if something is wrong
+    
     QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
     if(statusCode.isValid()) {
         if(statusCode.toInt() == 200) {
             QByteArray hostsData = reply->readAll();
-            qInfo() << hostsData;
+            qInfo() << "Hosts were succesfully received";
             return hostsData;
         }
     }

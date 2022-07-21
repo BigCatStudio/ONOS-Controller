@@ -10,6 +10,7 @@
 #include <QAuthenticator>
 #include <QNetworkProxy>
 #include <QFile>
+#include <QEventLoop>   // To synchronously wait for the all data to download from ONOS
 #include <typeinfo> // TODO probably to remove in the future
 
 // It has to be QObject because it uses slots to connect with QNetworkManager signals (operations are done asynchronously)
@@ -26,7 +27,7 @@ public slots:
     // know what is the structure of the topology and which ports are connected
 
     // User-defined
-    void getHosts(QString url);
+    [[ nodiscard ]] QByteArray getHosts(QString url);
     void getSwitches(QString url);
     void getLinks(QString url);
     void postFlow(QString url, QByteArray bodyData);

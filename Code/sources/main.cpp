@@ -8,13 +8,20 @@
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
+    // JSONConverter test and elements of topology I/O test for operator <<
+//    Topology topo;
+//    std::cout << topo;
+
+    // HTTPController GET method test for synchronous wait for data
     HTTPController controller;
+    QByteArray hosts = controller.getHosts("http://192.168.0.113:8181/onos/v1/hosts");
 
-    Topology topo;
-    std::cout << topo;
+    /*********************
+    TODO always when te topo is chose use pingall to detect all hosts
+    otherwise the getHosts will not work
 
-
-    // controller.get("https://ptsv2.com/t/o70s1-1657810062/post");
+    *********************/
+// controller.get("https://ptsv2.com/t/o70s1-1657810062/post");
 
 //    JSONConverter converter;
 //    QByteArray data = converter.postBodyJSON("1", "4", "3", "10.0.0.1/32");
