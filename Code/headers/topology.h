@@ -22,10 +22,20 @@ private:
     // TODO - Adjacency List indexes can be chassisId of the switches because they start with 1 and grow with step 1
     // Maybe first element of the list should be empty - not so ellegant solution !
 
+    // Adjacency List
+    // std::vector of std::vector is list of all switches in topology
+    // std::vector of std::pair is list of all reachable switches with their cost
+    std::vector<std::vector<std::pair<Switch, double>>> adjacencyList;
+
 public:
     Topology();
 
-    void setParameters(QByteArray hostsData, QByteArray switchesData, QByteArray linksData);
+    void setParameters(const QByteArray &hostsData, const QByteArray &switchesData, const QByteArray &linksData);
+    void updateParameters();
+    void displayParameters() const;
+    void createFlow(const QString &srcHostIp, const QString &dstHostIp);
+    std::vector<QString> shortestPath(const QString &srcHostIp, const QString &dstHostIp) const;
+    void deleteFlows();
 };
 
 #endif // TOPOLOGY_H

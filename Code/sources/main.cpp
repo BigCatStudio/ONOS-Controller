@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 //    }
 
     EventHandler eventHandler;
+    eventHandler.run();
 
     /*********************
     TODO always when the topo is chose use pingall to detect all hosts

@@ -7,10 +7,30 @@ Topology::Topology() {
     // linksSwitches
 }
 
-void Topology::setParameters(QByteArray hostsData, QByteArray switchesData, QByteArray linksData) {
+void Topology::setParameters(const QByteArray &hostsData, const QByteArray &switchesData, const QByteArray &linksData) {
     hosts = JSONConverter::getHostsJSON(hostsData);
     switches = JSONConverter::getSwitchesJSON(switchesData);
     links = JSONConverter::getLinksJSON(linksData);
+}
+
+void Topology::updateParameters() {
+
+}
+
+void Topology::displayParameters() const {
+
+}
+
+void Topology::createFlow(const QString &srcHostIp, const QString &dstHostIp) {
+
+}
+
+std::vector<QString> Topology::shortestPath(const QString &srcHostIp, const QString &dstHostIp) const {
+
+}
+
+void Topology::deleteFlows() {
+
 }
 
 std::ostream &operator<<(std::ostream &stream, const Topology &Source) {

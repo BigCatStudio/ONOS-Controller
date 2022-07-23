@@ -9,7 +9,7 @@ EventHandler::EventHandler() {
     std::cout << "Enter ONOS ip:";
     std::getline(std::cin, stdIp);
 
-    std::cout << "Enter ONOS User:";
+    std::cout << "Enter ONOS user:";
     std::getline(std::cin, stdUser);
 
     std::cout << "Enter ONOS password:";
@@ -34,4 +34,47 @@ EventHandler::EventHandler() {
 
     topology.setParameters(hostsData, switchesData, linksData);
     std::cout << topology << std::endl;
+}
+
+void EventHandler::run() {
+    bool exitLoop {false};
+
+    while(!exitLoop) {
+        std::string choice;
+        std::cout << "\nActions" << std::endl;
+        std::cout << "1.Create new flow" << std::endl;
+        std::cout << "2.Check shortest path between hosts" << std::endl;
+        std::cout << "3.Display informations about topology" << std::endl;
+        std::cout << "4.End program" << std::endl;
+        std::cout << "Choose action:";
+        std::getline(std::cin, choice);
+
+        try {
+            switch(std::stoi(choice)) {
+                case 1: {
+                    std::cout << "\n1 provided" << std::endl;
+                    break;
+                }
+                case 2: {
+                    std::cout << "\n2 provided" << std::endl;
+                    break;
+                }
+                case 3: {
+                    std::cout << "\n3 provided" << std::endl;
+                    break;
+                }
+                case 4: {
+                    std::cout << "\n4 provided" << std::endl;
+                    exitLoop = true;
+                    break;
+                }
+                default: {
+                    std::cerr << "\nInvalid option provided" << std::endl;
+                }
+            }
+        } catch(const std::exception &exception) {
+            std::cerr << "\nCannot convert input to numerical value" << std::endl;
+            std::cerr << exception.what() << std::endl;
+        }
+    }
 }

@@ -17,11 +17,11 @@ struct Switch {
 };
 
 struct Host {
-    QString id;         // Id of the host is configuration of: MAC & vlan
+    QString id;         // Id of the host is combination of: MAC & vlan
     QString ipAddress;  // Ip address of the host - usually 10.0.0.x
     bool configured;        // Status of the host - configured as server, client, none
     std::pair<QString, QString> linkToSwitch;    // Switch and port that host is connected to
-                                                    // std::pair<Switch - struct, port - std::string>
+                                                    // std::pair<chassisId - QString, port - QString>
     Host(QString idGiven, QString ipAddressGiven, bool configuredGiven, std::pair<QString, QString> linkToSwitchGiven);
 };
 

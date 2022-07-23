@@ -35,17 +35,16 @@ bool HTTPController::getDataHandler(const QString &url, QByteArray &data) {
     return false;
 }
 
-QByteArray HTTPController::getHosts(QString url) {
+QByteArray HTTPController::getHosts(const QString &url) {
     QByteArray hostsData;
     if(getDataHandler(url, hostsData)) {
         return hostsData;
     } else {
         throw static_cast<std::string>("Unexpected error occurred while downloading hosts data from server");
     }
-    // QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetHosts);
 }
 
-QByteArray HTTPController::getSwitches(QString url) {
+QByteArray HTTPController::getSwitches(const QString &url) {
     QByteArray switchesData;
     if(getDataHandler(url, switchesData)) {
         return switchesData;
@@ -54,7 +53,7 @@ QByteArray HTTPController::getSwitches(QString url) {
     }
 }
 
-QByteArray HTTPController::getLinks(QString url) {
+QByteArray HTTPController::getLinks(const QString &url) {
     QByteArray linksData;
     if(getDataHandler(url, linksData)) {
         return linksData;
@@ -63,7 +62,7 @@ QByteArray HTTPController::getLinks(QString url) {
     }
 }
 
-void HTTPController::postFlow(QString url, QByteArray bodyData) {
+void HTTPController::postFlow(const QString &url, const QByteArray &bodyData) {
     QNetworkRequest request = QNetworkRequest(QUrl(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -71,17 +70,10 @@ void HTTPController::postFlow(QString url, QByteArray bodyData) {
     QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyPostFlow);
 }
 
-void HTTPController::post(QString location, QByteArray data) {
-    qInfo() << "Posting to the server...";
-    QNetworkRequest request = QNetworkRequest(QUrl(location));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    // TODO These are lines to use for ONOS, the QByteArray data will be already sent to this function
-    // JSON de/serializer should be made as class that creates JSON bodies for post requests
-    // the body is created and sent here to be sent via HTTP POST request   
-
-    QNetworkReply* reply = manager.post(request, data);
-    QObject::connect(reply,&QNetworkReply::readyRead,this,&HTTPController::readyRead);
+// This function is created in order to delete all current flows from ONOS
+// It should be called from Topology
+void HTTPController::postDeleteFlows(const QString &url, const QByteArray &bodyData) {
+    // This function is created in order to delete all current flows from ONOS
 }
 
 void HTTPController::readyPostFlow() {
@@ -104,8 +96,8 @@ void HTTPController::readyRead() {
 
 void HTTPController::authenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator) {
     // TODO password and user login will be given by the user, when starting the program
-    authenticator->setUser("karaf");
-    authenticator->setPassword("karaf");
+    authenticator->setUser(user);
+    authenticator->setPassword(password);
     qInfo() << "authenticationRequired";
 }
 

@@ -35,13 +35,11 @@ public slots:
 
     // User-defined
     [[ nodiscard ]] bool getDataHandler(const QString &url, QByteArray &data);
-    [[ nodiscard ]] QByteArray getHosts(QString url);
-    [[ nodiscard ]] QByteArray getSwitches(QString url);
-    [[ nodiscard ]] QByteArray getLinks(QString url);
-    void postFlow(QString url, QByteArray bodyData);
-
-    // Qt-provided
-    void post(QString location, QByteArray data);
+    [[ nodiscard ]] QByteArray getHosts(const QString &url);
+    [[ nodiscard ]] QByteArray getSwitches(const QString &url);
+    [[ nodiscard ]] QByteArray getLinks(const QString &url);
+    void postFlow(const QString &url, const QByteArray &bodyData);
+    void postDeleteFlows(const QString &url, const QByteArray &bodyData);
 
 private slots:
     // User-defined

@@ -21,9 +21,9 @@ public:
     [[ nodiscard ]] static QByteArray postBodyJSON(QString deviceId, QString outPort, QString inPort, QString ip);
 
     // These functions create proper std::vector<> for Topology from json files downloaded from ONOS URL
-    [[ nodiscard ]] static std::vector<Host> getHostsJSON(QByteArray hostsData);
-    [[ nodiscard ]] static std::vector<Switch> getSwitchesJSON(QByteArray switchesData);
-    [[ nodiscard ]] static std::vector<Link> getLinksJSON(QByteArray linksData);
+    [[ nodiscard ]] static std::vector<Host> getHostsJSON(const QByteArray &hostsData);
+    [[ nodiscard ]] static std::vector<Switch> getSwitchesJSON(const QByteArray &switchesData);
+    [[ nodiscard ]] static std::vector<Link> getLinksJSON(const QByteArray &linksData);
 };
 
 #endif // JSONCONVERTER_H

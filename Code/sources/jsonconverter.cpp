@@ -59,7 +59,7 @@ QByteArray JSONConverter::postBodyJSON(QString deviceId, QString outPort, QStrin
     return data;
 }
 
-std::vector<Host> JSONConverter::getHostsJSON(QByteArray hostsData) {
+std::vector<Host> JSONConverter::getHostsJSON(const QByteArray &hostsData) {
     std::vector<Host> hosts;
     QJsonDocument document = QJsonDocument::fromJson(hostsData);
     QJsonObject mainObject = document.object();
@@ -83,7 +83,7 @@ std::vector<Host> JSONConverter::getHostsJSON(QByteArray hostsData) {
     return hosts;
 }
 
-std::vector<Switch> JSONConverter::getSwitchesJSON(QByteArray switchesData) {
+std::vector<Switch> JSONConverter::getSwitchesJSON(const QByteArray &switchesData) {
     std::vector<Switch> switches;
     QJsonDocument document = QJsonDocument::fromJson(switchesData);
     QJsonObject mainObject = document.object();
@@ -103,7 +103,7 @@ std::vector<Switch> JSONConverter::getSwitchesJSON(QByteArray switchesData) {
     return switches;
 }
 
-std::vector<Link> JSONConverter::getLinksJSON(QByteArray linksData) {
+std::vector<Link> JSONConverter::getLinksJSON(const QByteArray &linksData) {
     std::vector<Link> links;
     QJsonDocument document = QJsonDocument::fromJson(linksData);
     QJsonObject mainObject = document.object();

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <exception>
 #include <QString>
 
 #include "headers/topology.h"
@@ -21,6 +22,8 @@ private:
 
 public:
     EventHandler();
+
+    void run();
 };
 
 #endif // EVENTHANDLER_H
