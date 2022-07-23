@@ -17,9 +17,6 @@ class JSONConverter {
 public:
     JSONConverter();
 
-    // TODO all methods of this class should be marked as static and called without creating any JSONConverter object
-    // Example: HTTPController object uses post(url, body) like JSONConverter::postBodyJSON(...);
-
     // Creates JSON body of POST request for one one-direction-connection between ports (outport and inPort)
     [[ nodiscard ]] static QByteArray postBodyJSON(QString deviceId, QString outPort, QString inPort, QString ip);
 

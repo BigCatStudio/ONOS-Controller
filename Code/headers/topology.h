@@ -5,9 +5,6 @@
 #include <vector>
 
 #include "headers/topologyelements.h"
-
-// TODO delete these headers later - only test purpouses
-#include <QFile>
 #include "headers/jsonconverter.h"
 
 class Topology {
@@ -28,6 +25,7 @@ private:
 public:
     Topology();
 
+    void setParameters(QByteArray hostsData, QByteArray switchesData, QByteArray linksData);
 };
 
 #endif // TOPOLOGY_H

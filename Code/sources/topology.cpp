@@ -5,29 +5,16 @@ Topology::Topology() {
     // switches
     // hosts
     // linksSwitches
+}
 
-    // TODO change getting data from files to getting data from given URL
-    QFile fileHosts("../Code/onos-rest-json/hosts.json");
-    if(fileHosts.open(QIODevice::ReadOnly)) {
-        hosts = JSONConverter::getHostsJSON(fileHosts.readAll());
-    }
-    fileHosts.close();
-
-    QFile fileSwitches("../Code/onos-rest-json/devices.json");
-    if(fileSwitches.open(QIODevice::ReadOnly)) {
-        switches = JSONConverter::getSwitchesJSON(fileSwitches.readAll());
-    }
-    fileSwitches.close();
-
-    QFile fileLinks("../Code/onos-rest-json/links.json");
-    if(fileLinks.open(QIODevice::ReadOnly)) {
-        links = JSONConverter::getLinksJSON(fileLinks.readAll());
-    }
-    fileLinks.close();
+void Topology::setParameters(QByteArray hostsData, QByteArray switchesData, QByteArray linksData) {
+    hosts = JSONConverter::getHostsJSON(hostsData);
+    switches = JSONConverter::getSwitchesJSON(switchesData);
+    links = JSONConverter::getLinksJSON(linksData);
 }
 
 std::ostream &operator<<(std::ostream &stream, const Topology &Source) {
-    stream << "Hosts:\n";
+    stream << "\nHosts:\n";
     for(const auto &host : Source.hosts) {
         stream << host << "\n";
     }

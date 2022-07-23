@@ -8,34 +8,59 @@ HTTPController::HTTPController(QObject *parent) : QObject(parent) {
     QObject::connect(&manager,&QNetworkAccessManager::sslErrors,this,&HTTPController::sslErrors);
 }
 
-QByteArray HTTPController::getHosts(QString url) {
-    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
-    QEventLoop waitLoop;
-    QObject::connect(reply, &QNetworkReply::readyRead, &waitLoop, &QEventLoop::quit);
-    waitLoop.exec();
+void HTTPController::setAuthentication(QString userGiven, QString passwordGiven) {
+    user = userGiven;
+    password = passwordGiven;
+}
 
+bool HTTPController::getDataHandler(const QString &url, QByteArray &data) {
+    QEventLoop waitLoop;
+    QTimer timer;
+    timer.setSingleShot(true);
+    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
+
+    QObject::connect(reply, &QNetworkReply::readyRead, &waitLoop, &QEventLoop::quit);
+    QObject::connect(&timer, &QTimer::timeout, &waitLoop, &QEventLoop::quit);
+    timer.start(60000); // Default time to wait for data - 1 minute
+    waitLoop.exec();    // Waits until all data is received from server
+
+    // Code to perform after downloading data
     QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
     if(statusCode.isValid()) {
         if(statusCode.toInt() == 200) {
-            QByteArray hostsData = reply->readAll();
-            qInfo() << hostsData;
-            return hostsData;
+            data = reply->readAll();
+            return true;
         }
     }
-    // TODO maybe add exception to handle unexpected outcome
-    qWarning() << "Error occurred when executing method - status code: " << statusCode;
+    return false;
+}
 
+QByteArray HTTPController::getHosts(QString url) {
+    QByteArray hostsData;
+    if(getDataHandler(url, hostsData)) {
+        return hostsData;
+    } else {
+        throw static_cast<std::string>("Unexpected error occurred while downloading hosts data from server");
+    }
     // QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetHosts);
 }
 
-void HTTPController::getSwitches(QString url) {
-    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
-    QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetSwitches);
+QByteArray HTTPController::getSwitches(QString url) {
+    QByteArray switchesData;
+    if(getDataHandler(url, switchesData)) {
+        return switchesData;
+    } else {
+        throw static_cast<std::string>("Unexpected error occurred while downloading switches data from server");
+    }
 }
 
-void HTTPController::getLinks(QString url) {
-    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(url)));
-    QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyGetLinks);
+QByteArray HTTPController::getLinks(QString url) {
+    QByteArray linksData;
+    if(getDataHandler(url, linksData)) {
+        return linksData;
+    } else {
+        throw static_cast<std::string>("Unexpected error occurred while downloading links data from server");
+    }
 }
 
 void HTTPController::postFlow(QString url, QByteArray bodyData) {
@@ -44,12 +69,6 @@ void HTTPController::postFlow(QString url, QByteArray bodyData) {
 
     QNetworkReply *reply = manager.post(request, bodyData);
     QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyPostFlow);
-}
-
-void HTTPController::get(QString location) {
-    qInfo() << "Getting from server...";
-    QNetworkReply* reply = manager.get(QNetworkRequest(QUrl(location)));
-    QObject::connect(reply,&QNetworkReply::readyRead,this,&HTTPController::readyRead);
 }
 
 void HTTPController::post(QString location, QByteArray data) {
@@ -65,39 +84,6 @@ void HTTPController::post(QString location, QByteArray data) {
     QObject::connect(reply,&QNetworkReply::readyRead,this,&HTTPController::readyRead);
 }
 
-void HTTPController::readyGetHosts() {
-    qInfo() << "Received hosts from ONOS";
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
-
-    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    if(statusCode.isValid()) {
-        if(statusCode.toInt() == 200) {
-            QByteArray hostsData = reply->readAll();
-            qInfo() << hostsData;
-            return;
-        }
-    }
-    // TODO maybe add exception to handle unexpected outcome
-    qWarning() << "Error occurred when executing method - status code: " << statusCode;
-}
-
-// TODO add status_code checking like in readyGetHosts()
-// TODO think how to send QByteArray data to JSONConverter and then to Topology
-// JSONConverter methods shoudld not call HTTP functions because it would be unproffesional and messy - JSON only for JSON
-void HTTPController::readyGetSwitches() {
-    qInfo() << "Received switches from ONOS";
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
-    QByteArray switchesData = reply->readAll();
-    qInfo() << switchesData;
-}
-
-void HTTPController::readyGetLinks() {
-    qInfo() << "Received links from ONOS";
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
-    QByteArray linksData = reply->readAll();
-    qInfo() << linksData;
-}
-
 void HTTPController::readyPostFlow() {
     qInfo() << "New flow rule sent to ONOS";
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(QObject::sender());
@@ -105,24 +91,15 @@ void HTTPController::readyPostFlow() {
     qInfo() << flowData;
 }
 
-// TODO Maybe there should be different functions for GET and POST methods
 void HTTPController::readyRead() {
     qInfo() << "ReadyRead";
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(QObject::sender());
     qInfo() << "Size of the reply: " << reply->size() << " | source url: " << reply->url();
     qInfo() << "System size of the reply: " << sizeof(*reply) << " | system type: " << typeid(*reply).name();
     qInfo() << "Content:";
-//    if(reply) {
-//        qInfo() << reply->readAll();
-//    }
-    QByteArray data = reply->readAll();
-
-    QFile file("../Code/onos-rest-json/flows.json");
-    if(file.open(QIODevice::WriteOnly)) {
-        qInfo() << "File opened";
-        file.write(data);
+    if(reply) {
+        qInfo() << reply->readAll();
     }
-    file.close();
 }
 
 void HTTPController::authenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator) {

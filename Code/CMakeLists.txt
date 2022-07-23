@@ -20,5 +20,6 @@ add_executable(Code
   headers/jsonconverter.h       sources/jsonconverter.cpp
   headers/topology.h            sources/topology.cpp
   headers/topologyelements.h    sources/topologyelements.cpp
+  headers/eventhandler.h        sources/eventhandler.cpp
 )
 target_link_libraries(Code Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)

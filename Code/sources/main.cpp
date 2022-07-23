@@ -1,26 +1,34 @@
 #include <QCoreApplication>
 #include <iostream>
+#include <string>
 
-#include "headers/httpcontroller.h"
-#include "headers/jsonconverter.h"
-#include "headers/topology.h"
+#include "headers/eventhandler.h"
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
-    // JSONConverter test and elements of topology I/O test for operator <<
-//    Topology topo;
-//    std::cout << topo;
-
     // HTTPController GET method test for synchronous wait for data
-    HTTPController controller;
-    QByteArray hosts = controller.getHosts("http://192.168.0.113:8181/onos/v1/hosts");
+//    HTTPController controller;
+//    QByteArray hostsData;
+//    try {
+//        hostsData = controller.getHosts("http://192.168.0.113:8181/onos/v1/hosts");
+//    } catch(std::string exception) {
+//        std::cout << exception << std::endl;
+//    }
+
+
+//    std::vector<Host> hosts = JSONConverter::getHostsJSON(hostsData);
+//    for(const auto &host : hosts) {
+//        std::cout << host << std::endl;
+//    }
+
+    EventHandler eventHandler;
 
     /*********************
-    TODO always when te topo is chose use pingall to detect all hosts
+    TODO always when the topo is chose use pingall to detect all hosts
     otherwise the getHosts will not work
-
     *********************/
+
 // controller.get("https://ptsv2.com/t/o70s1-1657810062/post");
 
 //    JSONConverter converter;

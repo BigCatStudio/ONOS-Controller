@@ -11,6 +11,7 @@
 #include <QNetworkProxy>
 #include <QFile>
 #include <QEventLoop>   // To synchronously wait for the all data to download from ONOS
+#include <QTimer>       // Sets max time to wait for data from ONOS
 #include <typeinfo> // TODO probably to remove in the future
 
 // It has to be QObject because it uses slots to connect with QNetworkManager signals (operations are done asynchronously)
@@ -18,29 +19,32 @@ class HTTPController : public QObject {
     Q_OBJECT
 private:
     QNetworkAccessManager manager;
+    QString user;
+    QString password;
 
 public:
     explicit HTTPController(QObject *parent = nullptr);
+
+    void setAuthentication(QString userGiven, QString passwordGiven);
 
 public slots:
     // TODO add slots for other ONOS functions like routes/switches/hosts etc to
     // know what is the structure of the topology and which ports are connected
 
+    // TODO add in every function const QString &string to save memory
+
     // User-defined
+    [[ nodiscard ]] bool getDataHandler(const QString &url, QByteArray &data);
     [[ nodiscard ]] QByteArray getHosts(QString url);
-    void getSwitches(QString url);
-    void getLinks(QString url);
+    [[ nodiscard ]] QByteArray getSwitches(QString url);
+    [[ nodiscard ]] QByteArray getLinks(QString url);
     void postFlow(QString url, QByteArray bodyData);
 
     // Qt-provided
-    void get(QString location);
     void post(QString location, QByteArray data);
 
 private slots:
     // User-defined
-    void readyGetHosts();
-    void readyGetSwitches();
-    void readyGetLinks();
     void readyPostFlow();
 
     // Qt-provided
