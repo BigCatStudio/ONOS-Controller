@@ -53,25 +53,21 @@ void EventHandler::run() {
         try {
             switch(std::stoi(choice)) {
                 case 1: {
-                    std::cout << "\n1 provided" << std::endl;
                     break;
                 }
                 case 2: {
-                    std::cout << "\n2 provided" << std::endl;
                     break;
                 }
                 case 3: {
-                    std::cout << "\n3 provided" << std::endl;
                     std::cout << topology << std::endl;
                     break;
                 }
                 case 4: {
-                    std::cout << "\n4 provided" << std::endl;
                     topology.createAdjacencyList();
                     break;
                 }
                 case 5: {
-                    std::cout << "\n5 provided" << std::endl;
+                    std::cout << "Thank you for using this program - BigCatStudio" << std::endl;
                     exitLoop = true;
                     break;
                 }

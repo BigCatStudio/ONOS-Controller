@@ -47,6 +47,10 @@ Link Topology::getLink(const QString &srcId, const QString &dstId) const {
 void Topology::createAdjacencyList() {
     adjacencyList.resize(switches.size() + 1);
 
+    // TODO think about how to calculate cost of the link
+    // Where should the cost be stored
+    // How to update it
+    // Probably most important aspect of Topology class
     for(size_t i {1};i <= adjacencyList.size();i++) {
         for(const auto &link : links) {
             if(link.srcChassisId == QString::number(i, 10)) {

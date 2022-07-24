@@ -34,6 +34,7 @@ public:
     Link getLink(const QString &srcId, const QString &dstId) const;
 
     void createAdjacencyList();
+    void updateAdjacencylist(); // TODO rethink mechanisms here
 
     void setParameters(const QByteArray &hostsData, const QByteArray &switchesData, const QByteArray &linksData);
     void updateParameters();
