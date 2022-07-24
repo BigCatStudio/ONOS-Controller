@@ -6,10 +6,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QByteArray>
-#include <QString>
 #include <QFile>
-#include <utility>
-#include <vector>
 
 #include "headers/topologyelements.h"
 

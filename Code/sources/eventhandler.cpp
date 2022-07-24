@@ -45,7 +45,8 @@ void EventHandler::run() {
         std::cout << "1.Create new flow" << std::endl;
         std::cout << "2.Check shortest path between hosts" << std::endl;
         std::cout << "3.Display informations about topology" << std::endl;
-        std::cout << "4.End program" << std::endl;
+        std::cout << "4.Display adjacency list of topology" << std::endl;
+        std::cout << "5.End program" << std::endl;
         std::cout << "Choose action:";
         std::getline(std::cin, choice);
 
@@ -61,10 +62,16 @@ void EventHandler::run() {
                 }
                 case 3: {
                     std::cout << "\n3 provided" << std::endl;
+                    std::cout << topology << std::endl;
                     break;
                 }
                 case 4: {
                     std::cout << "\n4 provided" << std::endl;
+                    topology.createAdjacencyList();
+                    break;
+                }
+                case 5: {
+                    std::cout << "\n5 provided" << std::endl;
                     exitLoop = true;
                     break;
                 }

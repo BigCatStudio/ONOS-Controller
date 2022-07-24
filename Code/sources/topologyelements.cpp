@@ -8,7 +8,20 @@ Host::Host(QString idGiven, QString ipAddressGiven, bool configuredGiven, std::p
     : id{idGiven}, ipAddress{ipAddressGiven}, configured{configuredGiven}, linkToSwitch{linkToSwitchGiven} {}
 
 Link::Link(QString srcIdGiven, QString srcPortGiven, QString dstIdGiven, QString dstPortGiven, QString typeGiven, QString stateGiven)
-    : srcId{srcIdGiven}, srcPort{srcPortGiven}, dstId{dstIdGiven}, dstPort{dstPortGiven}, type{typeGiven}, state{stateGiven} {}
+    : srcId{srcIdGiven}, srcPort{srcPortGiven}, dstId{dstIdGiven}, dstPort{dstPortGiven}, type{typeGiven}, state{stateGiven} {
+
+    // Creating chassisId from full id to not call switches
+    srcChassisId = srcIdGiven.sliced(3, 16);
+    dstChassisId = dstIdGiven.sliced(3, 16);
+
+    while(srcChassisId.at(0) == '0') {
+        srcChassisId.remove(0, 1);
+    }
+
+    while(dstChassisId.at(0) == '0') {
+        dstChassisId.remove(0, 1);
+    }
+}
 
 std::ostream &operator<<(std::ostream &stream, const Switch &Source) {
     stream << " -> ID: " << Source.id.toStdString() << " | Chassis ID: " << Source.chassisId.toStdString() << " | Available: " << Source.available;

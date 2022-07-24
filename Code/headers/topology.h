@@ -2,8 +2,6 @@
 #define TOPOLOGY_H
 
 
-#include <vector>
-
 #include "headers/topologyelements.h"
 #include "headers/jsonconverter.h"
 
@@ -29,6 +27,13 @@ private:
 
 public:
     Topology();
+
+    Switch getSwitchChassisId(const QString &chassisId) const;    // Getting switch by its id
+    Switch getSwitchIpAddress(const QString &ipAddress) const;    // Getting switch connected to host of given ip
+    Host getHost(const QString &ipAddress) const;
+    Link getLink(const QString &srcId, const QString &dstId) const;
+
+    void createAdjacencyList();
 
     void setParameters(const QByteArray &hostsData, const QByteArray &switchesData, const QByteArray &linksData);
     void updateParameters();

@@ -2,10 +2,9 @@
 #define EVENTHANDLER_H
 
 #include <iostream>
-#include <string>
-#include <memory>
+#include <string>       // Used when using std I/O operations and transforming them to QString
+#include <memory>       // TODO maybe use with controller and topology but not sure by now
 #include <exception>
-#include <QString>
 
 #include "headers/topology.h"
 #include "headers/httpcontroller.h"
