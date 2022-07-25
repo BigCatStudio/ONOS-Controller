@@ -28,10 +28,10 @@ private:
 public:
     Topology();
 
-    Switch getSwitchChassisId(const QString &chassisId) const;    // Getting switch by its id
-    Switch getSwitchIpAddress(const QString &ipAddress) const;    // Getting switch connected to host of given ip
-    Host getHost(const QString &ipAddress) const;
-    Link getLink(const QString &srcId, const QString &dstId) const;
+    [[ nodiscard ]] Switch getSwitchChassisId(const QString &chassisId) const;    // Getting switch by its id
+    [[ nodiscard ]] Switch getSwitchIpAddress(const QString &ipAddress) const;    // Getting switch connected to host of given ip
+    [[ nodiscard ]] Host getHost(const QString &ipAddress) const;
+    [[ nodiscard ]] Link getLink(const QString &srcId, const QString &dstId) const;
 
     void createAdjacencyList();
     void updateAdjacencylist(); // TODO rethink mechanisms here
@@ -40,7 +40,7 @@ public:
     void updateParameters();
     void displayParameters() const;
     void createFlow(const QString &srcHostIp, const QString &dstHostIp);
-    std::vector<QString> shortestPath(const QString &srcHostIp, const QString &dstHostIp) const;
+    [[ nodiscard ]] std::vector<QString> shortestPath(const QString &srcHostIp, const QString &dstHostIp) const;
     void deleteFlows();
 };
 

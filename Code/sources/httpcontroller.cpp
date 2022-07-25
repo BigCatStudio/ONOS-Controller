@@ -62,6 +62,10 @@ QByteArray HTTPController::getLinks(const QString &url) {
     }
 }
 
+QByteArray HTTPController::getPath(const QString &srcId, const QString &dstId) {
+
+}
+
 void HTTPController::postFlow(const QString &url, const QByteArray &bodyData) {
     QNetworkRequest request = QNetworkRequest(QUrl(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -70,10 +74,8 @@ void HTTPController::postFlow(const QString &url, const QByteArray &bodyData) {
     QObject::connect(reply, &QNetworkReply::readyRead, this, &HTTPController::readyPostFlow);
 }
 
-// This function is created in order to delete all current flows from ONOS
-// It should be called from Topology
-void HTTPController::postDeleteFlows(const QString &url, const QByteArray &bodyData) {
-    // This function is created in order to delete all current flows from ONOS
+void HTTPController::deleteFlow(const QString &url, const QString &deviceId, const QString &flowId) {
+
 }
 
 void HTTPController::readyPostFlow() {

@@ -38,8 +38,12 @@ public slots:
     [[ nodiscard ]] QByteArray getHosts(const QString &url);
     [[ nodiscard ]] QByteArray getSwitches(const QString &url);
     [[ nodiscard ]] QByteArray getLinks(const QString &url);
+    [[ nodiscard ]] QByteArray getPath(const QString &srcId, const QString &dstId);       // Downloads shortest path between two given switches
+                                                                                          // Path is the shortest path and every edge is equall to 1
+                                                                                          // The given path is shortest in term of amount of switches
     void postFlow(const QString &url, const QByteArray &bodyData);
-    void postDeleteFlows(const QString &url, const QByteArray &bodyData);
+    void deleteFlow(const QString &url, const QString &deviceId, const QString &flowId);    // Deletes flow from ONOS system of given deviceId and its flowId
+                                                                                            // Uses ONOS Delete method via HTTP
 
 private slots:
     // User-defined
