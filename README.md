@@ -9,7 +9,7 @@ Unlike built-in in ONOS reactive forwarding app (org.onosproject.fwd), this prog
 
 Other less important features can help user to speed up some processes:
 * Fast deleting of flows in routing tables
-* Fast access to informations about topology elements using special defined commands instead of using applications like Postman (ONOS REST API will be used under the hood)
+* Fast access to informations about topology elements using special defined commands instead of using applications like Postman or ONOS CLI (ONOS REST API will be used under the hood)
 
 # Status
 Project is still in the phase of production and it is not currently working. Expect first working version on August/September.
